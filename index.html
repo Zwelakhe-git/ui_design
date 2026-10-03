@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f6f8">
+    <title>Forma — Visual HTML Builder</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell" id="appShell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Forma home">
+          <span class="brand-mark"><span></span><span></span><span></span></span>
+          <span>forma</span>
+        </a>
+        <div class="top-divider"></div>
+        <div class="document-title">
+          <strong>Untitled design</strong>
+          <span class="save-status"><i></i> Saved locally</span>
+        </div>
+        <div class="top-actions">
+          <button class="button button-quiet" id="previewButton" type="button">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 10s2.7-5 7.5-5 7.5 5 7.5 5-2.7 5-7.5 5-7.5-5-7.5-5Z"/><circle cx="10" cy="10" r="2"/></svg>
+            <span>Preview</span>
+          </button>
+          <button class="button button-primary" id="exportButton" type="button">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5v9m0 0 3.5-3.5M10 11.5 6.5 8M3.5 12.5v3h13v-3"/></svg>
+            <span>Export HTML</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="left-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">YOUR PROJECT</span>
+              <h1>Layers</h1>
+            </div>
+            <button class="icon-button" id="addMenuButton" type="button" aria-label="Add an element" title="Add an element">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg>
+            </button>
+          </div>
+          <div class="quick-insert">
+            <span class="eyebrow">INSERT ELEMENT</span>
+            <div class="insert-grid">
+              <button class="insert-button" data-add="rectangle" type="button">
+                <span class="insert-icon rectangle-icon"></span><span>Rectangle</span>
+              </button>
+              <button class="insert-button" data-add="circle" type="button">
+                <span class="insert-icon circle-icon"></span><span>Circle</span>
+              </button>
+              <button class="insert-button insert-wide" data-add="container" type="button">
+                <span class="insert-icon container-icon"><i></i><i></i><i></i></span><span>Layout container</span>
+              </button>
+            </div>
+          </div>
+          <div class="layers-heading">
+            <span>LAYERS <span class="layer-count" id="layerCount">0</span></span>
+            <button class="text-icon-button" id="clearButton" type="button" title="Clear the canvas">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h12M8 6V4h4v2m2 0-.6 9.5H6.6L6 6m2.7 2.2v4.8m2.6-4.8v4.8"/></svg>
+            </button>
+          </div>
+          <div class="layer-list" id="layerList" role="tree" aria-label="Design layers"></div>
+          <div class="sidebar-foot">
+            <span class="keyboard-hint"><kbd>⌘</kbd><kbd>↵</kbd> Export your design</span>
+            <span class="version-label">FORMA EDITOR <b>v1.0</b></span>
+          </div>
+        </aside>
+
+        <section class="canvas-area" aria-label="Design canvas">
+          <div class="canvas-toolbar">
+            <div class="canvas-breadcrumb"><span class="breadcrumb-dot"></span> Canvas <span class="breadcrumb-slash">/</span> <strong>Desktop</strong></div>
+            <div class="canvas-controls">
+              <label class="viewport-select-label"><span class="sr-only">Viewport preset</span><select id="viewportPreset" aria-label="Viewport preset"><option value="desktop">Desktop</option><option value="iphone16pro">iPhone 16 Pro</option><option value="tablet">Tablet</option><option value="custom">Custom size</option></select></label>
+              <div class="viewport-dimensions"><input id="viewportWidth" type="number" min="160" max="2400" aria-label="Viewport width"><span>×</span><input id="viewportHeight" type="number" min="160" max="2400" aria-label="Viewport height"></div>
+              <span class="control-divider viewport-divider"></span>
+              <div class="multi-select-controls" id="multiSelectControls" hidden>
+                <span id="multiSelectCount">0 selected</span>
+                <select id="groupLayoutInput" aria-label="Container layout">
+                  <option value="flex-row">Horizontal</option>
+                  <option value="flex-column">Vertical</option>
+                  <option value="grid">Grid</option>
+                </select>
+                <button id="groupSelectionButton" type="button">Add to container</button>
+              </div>
+              <span class="canvas-size">1200 <span>×</span> 760</span>
+              <span class="control-divider"></span>
+              <button class="zoom-button" id="zoomOut" type="button" aria-label="Zoom out">−</button>
+              <span class="zoom-value" id="zoomValue">100%</span>
+              <button class="zoom-button" id="zoomIn" type="button" aria-label="Zoom in">+</button>
+            </div>
+          </div>
+          <div class="canvas-viewport" id="canvasViewport">
+            <div class="artboard-wrap" id="artboardWrap">
+              <div class="artboard" id="artboard" aria-label="Desktop artboard">
+                <div class="artboard-empty" id="emptyState">
+                  <div class="empty-illustration">
+                    <span class="empty-shape empty-square"></span>
+                    <span class="empty-shape empty-circle"></span>
+                    <span class="empty-shape empty-line"></span>
+                  </div>
+                  <h2>Your canvas is a blank slate.</h2>
+                  <p>Add a shape or layout container to get started.</p>
+                  <div class="empty-actions">
+                    <button class="empty-action" data-add="rectangle" type="button"><span class="mini-shape mini-rect"></span>Rectangle</button>
+                    <button class="empty-action" data-add="circle" type="button"><span class="mini-shape mini-circle"></span>Circle</button>
+                    <button class="empty-action" data-add="container" type="button"><span class="mini-shape mini-layout"></span>Container</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="canvas-footer">
+            <span><span class="footer-status"></span> All changes saved</span>
+            <span>Drag to arrange <span class="footer-separator">·</span> Shift-click or drag empty canvas to multi-select</span>
+          </div>
+        </section>
+
+        <aside class="inspector-panel">
+          <div class="inspector-heading">
+            <div>
+              <span class="eyebrow">DESIGN</span>
+              <h2>Properties</h2>
+            </div>
+            <span class="selection-indicator" id="selectionIndicator"></span>
+          </div>
+          <div class="inspector-content" id="inspectorContent">
+            <div class="inspector-empty" id="inspectorEmpty">
+              <div class="select-cursor">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><path d="m7 3 18 15-8 1.5-4 7L7 3Z"/></svg>
+              </div>
+              <strong>Nothing selected</strong>
+              <span>Choose a layer or click an element on the canvas to edit its properties.</span>
+            </div>
+            <div class="property-editor" id="propertyEditor" hidden>
+              <div class="selected-layer">
+                <span class="selected-type-icon" id="selectedTypeIcon"></span>
+                <input class="layer-name-input" id="layerName" aria-label="Layer name" maxlength="40">
+                <span class="selected-type" id="selectedType"></span>
+              </div>
+              <div class="layer-order-actions" aria-label="Layer order and duplication">
+                <button type="button" id="sendBackwardButton" title="Send backward" aria-label="Send backward"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7h8v8H4zM8 4h8v8"/><path d="m9 12 2 2 2-2"/></svg></button>
+                <button type="button" id="bringForwardButton" title="Bring forward" aria-label="Bring forward"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 7h8v8H8zM4 12V4h8"/><path d="m11 10 2-2 2 2"/></svg></button>
+                <button type="button" id="duplicateButton" title="Duplicate (Ctrl+D)" aria-label="Duplicate"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="10" rx="1.5"/><path d="M12 7V5.5A1.5 1.5 0 0 0 10.5 4h-5A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15H7"/></svg></button>
+              </div>
+              <label class="field html-id-field"><span>HTML id <b class="field-suffix">optional</b></span><div class="input-wrap"><input id="htmlIdInput" type="text" maxlength="80" spellcheck="false" placeholder="e.g. hero-card" aria-label="HTML id"></div></label>
+              <div class="property-section">
+                <button class="section-title" type="button" aria-expanded="true"><span>SIZE &amp; POSITION</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7.5 10 13l6-5.5"/></svg></button>
+                <div class="section-body">
+                  <div class="field-grid">
+                    <label class="field"><span>Width</span><div class="input-wrap"><input id="widthInput" type="number" min="1" max="1200" title="Scroll to adjust; hold Shift for larger steps"><b>W</b></div></label>
+                    <label class="field"><span>Height</span><div class="input-wrap"><input id="heightInput" type="number" min="1" max="760" title="Scroll to adjust; hold Shift for larger steps"><b>H</b></div></label>
+                    <label class="field" id="xField"><span>X position</span><div class="input-wrap"><input id="xInput" type="number" title="Scroll to adjust; hold Shift for larger steps"><b>X</b></div></label>
+                    <label class="field" id="yField"><span>Y position</span><div class="input-wrap"><input id="yInput" type="number" title="Scroll to adjust; hold Shift for larger steps"><b>Y</b></div></label>
+                  </div>
+                </div>
+              </div>
+              <div class="property-section" id="fillSection">
+                <button class="section-title" type="button" aria-expanded="true"><span>APPEARANCE</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7.5 10 13l6-5.5"/></svg></button>
+                <div class="section-body">
+                  <label class="field color-field"><span>Fill color</span><div class="color-input-wrap"><span class="color-swatch" id="colorSwatch"></span><input id="colorInput" type="text" maxlength="7" spellcheck="false" aria-label="Fill color"><label class="color-picker-label" for="colorPicker">Choose color</label><input id="colorPicker" type="color" aria-label="Choose fill color"></div></label>
+                  <label class="field radius-field" id="radiusField"><span>Corner radius <b class="field-suffix">px</b></span><div class="range-row"><input id="radiusInput" type="range" min="0" max="100" value="0"><span class="range-value" id="radiusValue">0</span></div></label>
+                  <div class="border-fields">
+                    <label class="field"><span>Border color</span><div class="color-input-wrap compact-color"><span class="color-swatch" id="borderColorSwatch"></span><input id="borderColorInput" type="text" maxlength="7" spellcheck="false" aria-label="Border color"><label class="color-picker-label" for="borderColorPicker">Choose border color</label><input id="borderColorPicker" type="color" aria-label="Choose border color"></div></label>
+                    <label class="field"><span>Border width <b class="field-suffix">px</b></span><div class="input-wrap"><input id="borderWidthInput" type="number" min="0" max="40"><b>px</b></div></label>
+                    <label class="field border-style-field"><span>Border style</span><div class="select-wrap"><select id="borderStyleInput" aria-label="Border style"><option value="solid">Solid</option><option value="dashed">Dashed</option><option value="dotted">Dotted</option><option value="double">Double</option></select><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg></div></label>
+                  </div>
+                </div>
+              </div>
+              <div class="property-section" id="shadowSection">
+                <button class="section-title" type="button" aria-expanded="true"><span>SHADOW</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7.5 10 13l6-5.5"/></svg></button>
+                <div class="section-body">
+                  <label class="field shadow-color-field"><span>Shadow color</span><div class="color-input-wrap"><span class="color-swatch" id="shadowColorSwatch"></span><input id="shadowColorInput" type="text" maxlength="7" spellcheck="false" aria-label="Shadow color"><label class="color-picker-label" for="shadowColorPicker">Choose shadow color</label><input id="shadowColorPicker" type="color" aria-label="Choose shadow color"></div></label>
+                  <div class="field-grid shadow-fields">
+                    <label class="field"><span>Blur</span><div class="input-wrap"><input id="shadowBlurInput" type="number" min="0" max="100"><b>px</b></div></label>
+                    <label class="field"><span>Opacity</span><div class="input-wrap"><input id="shadowOpacityInput" type="number" min="0" max="100"><b>%</b></div></label>
+                    <label class="field"><span>Offset X</span><div class="input-wrap"><input id="shadowXInput" type="number" min="-100" max="100"><b>px</b></div></label>
+                    <label class="field"><span>Offset Y</span><div class="input-wrap"><input id="shadowYInput" type="number" min="-100" max="100"><b>px</b></div></label>
+                  </div>
+                </div>
+              </div>
+              <div class="property-section" id="layoutSection" hidden>
+                <button class="section-title" type="button" aria-expanded="true"><span>LAYOUT</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7.5 10 13l6-5.5"/></svg></button>
+                <div class="section-body">
+                  <label class="auto-size-toggle"><input id="autoSizeInput" type="checkbox"><span class="toggle-indicator"></span><span>Fit content automatically</span></label>
+                  <label class="field"><span>Display</span><div class="select-wrap"><select id="layoutInput"><option value="flex">Flex</option><option value="grid">Grid</option></select><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg></div></label>
+                  <div class="field-grid layout-fields">
+                    <label class="field"><span>Gap</span><div class="input-wrap"><input id="gapInput" type="number" min="0" max="100"><b>px</b></div></label>
+                    <label class="field"><span>Padding</span><div class="input-wrap"><input id="paddingInput" type="number" min="0" max="100"><b>px</b></div></label>
+                  </div>
+                  <label class="field" id="directionField"><span>Direction</span><div class="select-wrap"><select id="directionInput"><option value="row">Horizontal</option><option value="column">Vertical</option></select><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg></div></label>
+                  <label class="field" id="columnsField" hidden><span>Columns</span><div class="input-wrap"><input id="columnsInput" type="number" min="1" max="6"><b>cols</b></div></label>
+                  <label class="field overflow-field"><span>Overflow</span><div class="select-wrap"><select id="overflowInput" aria-label="Container overflow"><option value="visible">Visible</option><option value="hidden">Hidden</option><option value="auto">Auto</option><option value="scroll">Scroll</option><option value="auto-x">Auto horizontal</option><option value="auto-y">Auto vertical</option></select><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg></div></label>
+                </div>
+              </div>
+              <button class="delete-element-button" id="deleteButton" type="button">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h12M8 6V4h4v2m2 0-.6 9.5H6.6L6 6m2.7 2.2v4.8m2.6-4.8v4.8"/></svg>
+                Delete element
+              </button>
+            </div>
+          </div>
+          <div class="inspector-bottom">
+            <span class="help-dot">?</span>
+            <span>Made for the web, by design.</span>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <button class="preview-exit" id="previewExitButton" type="button" hidden>
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 6 8 8M14 6l-8 8"/></svg>
+      Exit preview
+    </button>
+
+    <div class="modal-backdrop" id="exportModal" hidden>
+      <section class="export-modal" role="dialog" aria-modal="true" aria-labelledby="exportTitle">
+        <div class="modal-header">
+          <div><span class="eyebrow">READY FOR THE WEB</span><h2 id="exportTitle">Your HTML is ready.</h2></div>
+          <button class="icon-button" id="closeExport" type="button" aria-label="Close export window"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button>
+        </div>
+        <p class="modal-description">A self-contained HTML file with all your styles. Copy the code or download it to use anywhere.</p>
+        <div class="code-window">
+          <div class="code-window-bar"><span><i></i><i></i><i></i></span><span>index.html</span><button id="copyButton" type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="10" rx="1.5"/><path d="M12 7V5.5A1.5 1.5 0 0 0 10.5 4h-5A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15H7"/></svg><span>Copy code</span></button></div>
+          <pre><code id="exportCode"></code></pre>
+        </div>
+        <div class="modal-footer"><span class="export-note"><span>✦</span> Clean HTML. No dependencies.</span><button class="button button-primary" id="downloadButton" type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5v9m0 0 3.5-3.5M10 11.5 6.5 8M3.5 12.5v3h13v-3"/></svg>Download HTML</button></div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
