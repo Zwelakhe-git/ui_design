@@ -234,7 +234,7 @@
     }
     if (item.type === "container") {
       node.classList.toggle("auto-size", Boolean(item.autoSize));
-      node.style.display = item.layout === "grid" ? "grid" : "flex";
+      node.style.display = item.layout === "grid" ? "grid" : item.layout === "flex" ? "flex" : "block";
       node.style.gap = `${item.gap}px`;
       node.style.padding = `${item.padding}px`;
       node.style.boxSizing = "border-box";
@@ -242,8 +242,9 @@
       node.style.overflowX = item.overflow === "auto-x" ? "auto" : item.overflow === "auto-y" ? "hidden" : "";
       node.style.overflowY = item.overflow === "auto-y" ? "auto" : item.overflow === "auto-x" ? "hidden" : "";
       if (item.layout === "grid") node.style.gridTemplateColumns = `repeat(${item.columns}, minmax(0, 1fr))`;
-      else node.style.flexDirection = item.direction;
-      node.style.alignItems = "flex-start";
+      else if (item.layout === "flex") node.style.flexDirection = item.direction;
+      else node.style.position = "relative";
+      node.style.alignItems = item.layout === "flex" ? "flex-start" : "stretch";
     }
 
   }
@@ -438,7 +439,7 @@
       const dy = moveEvent.clientY - start.clientY;
       moved ||= Math.abs(dx) + Math.abs(dy) > 2;
       node.style.transform = `translate(${dx / scale}px, ${dy / scale}px)`;
-      activeDropTarget = findDropTarget(moveEvent.clientX, moveEvent.clientY, [item.id, originParent.id]);
+      activeDropTarget = findDropTarget(moveEvent.clientX, moveEvent.clientY, [item.id, originParent.id], [item.id]);
       artboard.querySelectorAll(".drop-target").forEach(target => target.classList.remove("drop-target"));
       if (activeDropTarget) artboard.querySelector(`[data-id="${CSS.escape(activeDropTarget)}"]`)?.classList.add("drop-target");
     };
@@ -580,11 +581,11 @@
     artboard.addEventListener("pointercancel", end);
   }
 
-  function findDropTarget(clientX, clientY, excludedIds) {
+  function findDropTarget(clientX, clientY, excludedIds, movingIds = excludedIds) {
     const candidates = [...artboard.querySelectorAll(".container-element")].reverse();
     const target = candidates.find(node => {
       const id = node.dataset.id;
-      if (excludedIds.includes(id) || excludedIds.some(sourceId => isDescendant(id, findElement(sourceId)))) return false;
+      if (excludedIds.includes(id) || movingIds.some(sourceId => isDescendant(id, findElement(sourceId)))) return false;
       const rect = node.getBoundingClientRect();
       return clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom;
     });

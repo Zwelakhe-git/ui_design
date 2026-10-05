@@ -15,3 +15,13 @@
 * a container can be scrollable. with this it will have a hidden overflow in case an element inside it is partially visible (overlaps). overflow can be changed between visible, hidden, overflow, overflow-x, overflow-y.
 * fix the "vertical" direction. it currently doesnt work
 * make the different sections in the right panel collapsable and expandable. like "apearance", "size & position", "layout", "shadow" and so on. the chevron triggers the collapse. right now its there but its not responsive.
+
+
+* containers should also have a block display, not just grid and flex, so that elements inside them can be placed anywhere (with position absolute) relative to the container.
+* add support for nesting containers so that a container inside another container can have elements too. this will mean that you can drag an element to a nested container even if its inside (both container and element) the parent container. it will now be inside the nested container.
+
+
+in the "size & position" block add under the dimensions input (w, h) first a checkbox for toggling absolute positioning of the element.
+when checked there will appear inputs for positioning: x, y. on change an element is placed at this position
+
+also add an input for rotation angle, which will show whether or not the checkbox is checked.
